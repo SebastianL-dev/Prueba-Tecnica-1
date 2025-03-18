@@ -10,6 +10,27 @@ import { FaRegClock } from "react-icons/fa";
 export default function Home() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [products, setproducts] = useState<Product[]>([]);
+  const [filter, setFilter] = useState<string>("all");
+
+  const handleDelete = (id: number) => {
+    const newProducts = products.filter((product) => product.code !== id);
+    setproducts(newProducts);
+  };
+
+  const filteredProducts = [...products].sort((a, b) => {
+    switch (filter) {
+      case "amount":
+        return b.amount - a.amount;
+      case "name":
+        return a.name.localeCompare(b.name);
+      case "date":
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      case "code":
+        return a.code - b.code;
+      default:
+        return 0;
+    }
+  });
 
   return (
     <>
@@ -25,10 +46,75 @@ export default function Home() {
         </section>
 
         <section className="flex flex-col gap-8">
-          <h2 className="text-white font-bold text-3xl w-fit">Productos</h2>
+          <div className="flex flex-col gap-3">
+            <h2 className="text-white font-bold text-3xl w-fit">Productos</h2>
+
+            <ul className="flex gap-4 text-neutral-400 text-sm font-normal">
+              <li>
+                <button
+                  className={`flex ${
+                    filter === "all"
+                      ? "bg-purple-500 text-white"
+                      : "bg-neutral-800"
+                  } w-fit justify-center rounded-full py-1 px-4 bottom-6 right-6 hover:scale-105 ease-bounce duration-300 cursor-pointer`}
+                  onClick={() => setFilter("all")}
+                >
+                  Todos
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`flex ${
+                    filter === "amount"
+                      ? "bg-purple-500 text-white"
+                      : "bg-neutral-800"
+                  } w-fit justify-center rounded-full py-1 px-4 bottom-6 right-6 hover:scale-105 ease-bounce duration-300 cursor-pointer`}
+                  onClick={() => setFilter("amount")}
+                >
+                  Cantidad
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`flex ${
+                    filter === "date"
+                      ? "bg-purple-500 text-white"
+                      : "bg-neutral-800"
+                  } w-fit justify-center rounded-full py-1 px-4 bottom-6 right-6 hover:scale-105 ease-bounce duration-300 cursor-pointer`}
+                  onClick={() => setFilter("date")}
+                >
+                  Fecha
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`flex ${
+                    filter === "code"
+                      ? "bg-purple-500 text-white"
+                      : "bg-neutral-800"
+                  } w-fit justify-center rounded-full py-1 px-4 bottom-6 right-6 hover:scale-105 ease-bounce duration-300 cursor-pointer`}
+                  onClick={() => setFilter("code")}
+                >
+                  Codigo
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`flex ${
+                    filter === "name"
+                      ? "bg-purple-500 text-white"
+                      : "bg-neutral-800"
+                  } w-fit justify-center rounded-full py-1 px-4 bottom-6 right-6 hover:scale-105 ease-bounce duration-300 cursor-pointer`}
+                  onClick={() => setFilter("name")}
+                >
+                  Nombre
+                </button>
+              </li>
+            </ul>
+          </div>
 
           <ul className="grid grid-cols-4 gap-0 gap-x-6">
-            {products.map((product, index) => {
+            {filteredProducts.map((product, index) => {
               return (
                 <li
                   key={index}
@@ -59,7 +145,10 @@ export default function Home() {
                   </div>
 
                   <div className="mt-8 border-t border-neutral-700 pt-4">
-                    <button className="flex bg-red-500 w-full justify-center rounded-full py-2 bottom-6 right-6 hover:scale-103 ease-bounce duration-300 cursor-pointer">
+                    <button
+                      className="flex bg-red-500 w-full justify-center rounded-full py-2 bottom-6 right-6 hover:scale-103 ease-bounce duration-300 cursor-pointer"
+                      onClick={() => handleDelete(product.code)}
+                    >
                       Eliminar
                     </button>
                   </div>
