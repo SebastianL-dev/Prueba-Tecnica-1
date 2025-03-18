@@ -36,7 +36,9 @@ export default function Form({
     close();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
@@ -48,62 +50,84 @@ export default function Form({
   return (
     <form
       action="create a product"
-      className="text-white z-50 flex flex-col gap-16 bg-neutral-800 p-8 rounded-xl items-center border-2 border-neutral-700"
+      className="text-white z-50 flex flex-col gap-12 bg-neutral-900 p-8 rounded-xl items-center border-2 border-neutral-700"
       onSubmit={handleSubmit}
     >
-      <legend>
+      <legend className="flex flex-col gap-2">
         <span className="text-3xl font-bold">Crear producto</span>
+        <p className="text-neutral-400">
+          Añade un nuevo producto en tu inventario.
+        </p>
       </legend>
 
-      <fieldset className="flex flex-col gap-8">
-        <label className="flex relative w-fit items-center">
+      <fieldset className="flex flex-col gap-8 w-full">
+        <div className="flex relative w-full flex-col gap-3 text-sm">
+          <label className="w-fit" htmlFor="name">
+            Nombre del producto{" "}
+            <span className="font-semibold text-red-500">*</span>
+          </label>
           <input
             type="text"
+            id="name"
             name="name"
-            placeholder="Nombre"
+            placeholder="Ingrese el nombre del producto"
             onChange={handleChange}
             value={form.name}
             required
-            className="flex border-b-2 border-white/55 focus:border-purple-500 outline-0 py-1.5 px-1 transition-all ease-linear duration-150"
+            className="flex border px-3 py-2.5 border-white/40 rounded-lg focus:border-purple-500 outline-0 transition-all ease-linear duration-150 w-full"
           />
-        </label>
+        </div>
 
-        <label>
-          <input
-            type="text"
+        <div className="flex relative w-full flex-col gap-3 text-sm">
+          <label className="w-fit" htmlFor="description">
+            Descripción del producto{" "}
+            <span className="font-semibold text-red-500">*</span>
+          </label>
+          <textarea
+            id="description"
             name="description"
-            placeholder="Descripción"
+            placeholder="Ingrese la descripción del producto"
             onChange={handleChange}
             value={form.description}
             required
-            className="flex border-b-2 border-white/55 focus:border-purple-500 outline-0 py-1.5 px-1 transition-all ease-linear duration-150"
+            className="flex border min-h-24 placeholder:text-sm px-3 py-2.5 border-white/40 rounded-lg focus:border-purple-500 outline-0 transition-all ease-linear duration-150 w-full resize-none"
           />
-        </label>
+        </div>
 
-        <label>
+        <div className="flex relative w-full flex-col gap-3 text-sm">
+          <label className="w-fit" htmlFor="amount">
+            Cantidad del producto{" "}
+            <span className="font-semibold text-red-500">*</span>
+          </label>
           <input
             type="number"
+            id="amount"
             name="amount"
-            placeholder="Cantidad"
+            placeholder="Ingrese la cantidad del producto"
             onChange={handleChange}
-            value={form.amount}
+            value={form.amount === 0 ? "" : form.amount}
             required
-            className="flex border-b-2 border-white/55 focus:border-purple-500 outline-0 py-1.5 px-1 transition-all ease-linear duration-150"
+            className="flex border text-sm px-3 py-2.5 border-white/40 rounded-lg focus:border-purple-500 outline-0 transition-all ease-linear duration-150 w-full"
           />
-        </label>
+        </div>
       </fieldset>
 
-      <div className="flex gap-4">
-        <button className="flex bg-purple-500 w-fit rounded-full px-4 py-2 hover:scale-110 ease-bounce duration-300 cursor-pointer">
+      <div className="flex gap-4 w-full">
+        <button className="flex bg-purple-500 w-full shadow-primary-2 rounded-full px-4 py-2 hover:scale-110 ease-bounce duration-300 cursor-pointer justify-center">
           Crear
         </button>
         <button
-          className="flex bg-neutral-600 w-fit rounded-full px-4 py-2 hover:scale-110 ease-bounce duration-300 cursor-pointer"
+          className="flex bg-neutral-600 w-full rounded-full px-4 py-2 hover:scale-110 ease-bounce duration-300 cursor-pointer justify-center shadow-gray"
           onClick={close}
         >
           Cancelar
         </button>
       </div>
+
+      <p className="text-neutral-500 font-normal text-sm">
+        Todos los campos son requeridos{" "}
+        <span className="font-semibold text-red-500">*</span>
+      </p>
     </form>
   );
 }
