@@ -136,7 +136,7 @@ export default function Home() {
                     </div>
 
                     <div className="flex flex-col gap-6 justify-between h-full text-sm">
-                      <p className="font-normal text-sm text-white/50">
+                      <p className="font-normal text-sm text-white/50 break-words">
                         {product.description}
                       </p>
 
