@@ -43,8 +43,6 @@ export default function Form({
       ...form,
       [e.target.name]: e.target.value,
     });
-
-    console.log(form);
   };
 
   return (
